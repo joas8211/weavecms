@@ -3,7 +3,6 @@
 	import Item from './Item.svelte'
 	import Button from '$lib/builder/ui/Button.svelte'
 	import page_types from '$lib/builder/stores/data/page_types'
-	import actions from '$lib/builder/actions/page_types'
 	import active_page_type from '$lib/builder/stores/data/page_type'
 	import { editing_context } from '$lib/builder/stores/app/misc'
 	import { id as site_id } from '$lib/builder/stores/data/site'
@@ -11,13 +10,13 @@
 	import modal from '$lib/builder/stores/app/modal'
 
 	async function create_page_type(new_page_type) {
-		await actions.create(new_page_type)
+		// TODO: Implement
 		goto(`/${$site_id}/page-type--${new_page_type.id}`)
 		modal.hide()
 	}
 
 	async function delete_page_type(page_id) {
-		actions.delete(page_id)
+		// TODO: Implement
 	}
 
 	let creating_page = $state(false)
@@ -32,7 +31,7 @@
 					active={$active_page_type.id === page_type.id && $editing_context === 'page_type'}
 					on:edit={({ detail }) => {
 						console.log({ detail })
-						actions.update(page_type.id, detail)
+						// TODO: Implement
 					}}
 					on:delete={({ detail: page }) => delete_page_type(page.id)}
 				/>

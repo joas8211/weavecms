@@ -1,6 +1,4 @@
 <script lang="ts">
-	import * as actions from '$lib/actions'
-	import { create_library_symbol_group } from '$lib/actions'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { goto, invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
@@ -40,7 +38,7 @@
 	let new_site_group_name = $state('')
 	async function create_site_group(e) {
 		e.preventDefault()
-		await actions.create_site_group(new_site_group_name)
+		// TODO: Implement
 		invalidate('app:data')
 		is_creating_site_group = false
 	}
@@ -49,7 +47,7 @@
 	let new_group_name = $state('')
 	async function create_group(e) {
 		e.preventDefault()
-		await create_library_symbol_group(new_group_name)
+		// TODO: Implement
 		invalidate('app:data')
 		is_dialog_open = false
 	}

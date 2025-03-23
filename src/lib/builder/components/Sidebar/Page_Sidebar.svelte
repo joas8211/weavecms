@@ -1,7 +1,6 @@
 <script>
-	import axios from 'axios'
 	import { flip } from 'svelte/animate'
-	import _ from 'lodash-es'
+	import 'lodash-es'
 	import UI from '$lib/builder/ui'
 	import site from '$lib/builder/stores/data/site.js'
 	import active_page from '$lib/builder/stores/data/page.js'
@@ -11,8 +10,6 @@
 	import Sidebar_Symbol from './Sidebar_Symbol.svelte'
 	import Content from '../Content.svelte'
 	import { debounce } from '$lib/builder/utils'
-	import { update_page_entries } from '$lib/builder/actions/pages.js'
-	import { move_block } from '$lib/builder/actions/symbols'
 	import { browser } from '$app/environment'
 	import { goto } from '$app/navigation'
 	import { dropTargetForElements } from '$lib/builder/libraries/pragmatic-drag-and-drop/entry-point/element/adapter.js'
@@ -57,9 +54,9 @@
 				const block_being_dragged = source.data.block
 				const closestEdgeOfTarget = extractClosestEdge(self.data)
 				if (closestEdgeOfTarget === 'top') {
-					move_block(block_being_dragged, block_dragged_over_index)
+					// TODO: Implement
 				} else if (closestEdgeOfTarget === 'bottom') {
-					move_block(block_being_dragged, block_dragged_over_index + 1)
+					// TODO: Implement
 				}
 			}
 		})

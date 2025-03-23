@@ -6,7 +6,6 @@
 	import ModalHeader from './ModalHeader.svelte'
 	import CodeEditor from '$lib/builder/components/CodeEditor/CodeMirror.svelte'
 	import modal from '$lib/builder/stores/app/modal'
-	import page_types, { update_page_type } from '$lib/builder/actions/page_types'
 	import page_type from '$lib/builder/stores/data/page_type'
 
 	let local_code = $state(_.cloneDeep($page_type.code))
@@ -16,11 +15,7 @@
 	let disableSave = false
 
 	async function saveComponent() {
-		page_types.update($page_type.id, { code: local_code })
-		update_page_type({
-			entries: local_entries,
-			fields: local_fields
-		})
+		// TODO: Implement
 		modal.hide()
 	}
 </script>

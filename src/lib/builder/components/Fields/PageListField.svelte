@@ -1,7 +1,6 @@
 <script>
 	import { onMount } from 'svelte'
 	import UI from '../../ui/index.js'
-	import page_types from '../../stores/data/page_types.js'
 
 	let { field, oninput } = $props()
 
@@ -11,7 +10,7 @@
 
 	onMount(() => {
 		// set initial value
-		if (!selected_page_type) oninput({ ...field.options, page_type: $page_types[0].id })
+		// TODO: Implement
 	})
 </script>
 
@@ -33,11 +32,6 @@
 				label="Page Type"
 				value={selected_page_type}
 				fullwidth={true}
-				options={$page_types.map((page_type) => ({
-					label: page_type.name,
-					value: page_type.id,
-					icon: page_type.icon
-				}))}
 			/>
 		</div>
 	{/if}

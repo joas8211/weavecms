@@ -2,7 +2,6 @@
 	import Item from './Item.svelte'
 	import Button from '$lib/builder/ui/Button.svelte'
 	import pages from '$lib/builder/stores/data/pages'
-	import actions from '$lib/builder/actions/pages'
 	import active_page from '$lib/builder/stores/data/page'
 	import { editing_context } from '$lib/builder/stores/app/misc'
 	import { flip } from 'svelte/animate'
@@ -13,12 +12,12 @@
 		if (url_taken) {
 			alert(`That URL is already in use`)
 		} else {
-			await actions.create({ ...new_page, index })
+			// TODO: Implement
 		}
 	}
 
 	async function delete_page(page) {
-		actions.delete(page)
+		// TODO: Implement
 	}
 
 	let creating_page = $state(false)

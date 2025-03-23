@@ -1,8 +1,6 @@
 <!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot making the component unusable -->
 <script>
 	import Icon from '@iconify/svelte'
-	import { hide } from './Modal.svelte'
-
 	export let variants = ''
 	export let icon = ''
 	export let svg = ''
@@ -16,7 +14,7 @@
 	function closeModal() {
 		if (warn()) {
 			onclose()
-			hide()
+			// TODO: Implement
 		}
 	}
 </script>

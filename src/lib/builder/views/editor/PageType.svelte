@@ -11,10 +11,7 @@
 	import LockedOverlay from './Layout/LockedOverlay.svelte'
 	import symbols from '$lib/builder/stores/data/symbols'
 	import { hydrate_page_type } from '$lib/builder/stores/hydration'
-	import { code as siteCode, design as siteDesign } from '../../stores/data/site.js'
 	import { locale, locked_blocks } from '../../stores/app/misc.js'
-	import { add_page_type_section, delete_page_type_section } from '$lib/builder/actions/page_types.js'
-	import { move_section, update_section } from '$lib/builder/actions/sections.js'
 	import modal from '../../stores/app/modal.js'
 	import sections from '../../stores/data/sections.js'
 	import { get_section } from '../../stores/helpers.js'
@@ -93,10 +90,7 @@
 						icon: 'fas fa-check',
 						label: 'Save',
 						onclick: (updated_data) => {
-							update_section(section_id, {
-								updated_data,
-								build_page: false
-							})
+							// TODO: Implement
 							modal.hide()
 						}
 					}
@@ -252,7 +246,7 @@
 			async onDrop({ source }) {
 				if (dragging_over_section) return // prevent double-adding block
 				const block_being_dragged = source.data.block
-				add_page_type_section(block_being_dragged, $sections.length)
+				// TODO: Implement
 				reset_drag()
 			}
 		})
@@ -296,9 +290,9 @@
 				const block_being_dragged = source.data.block
 				const closestEdgeOfTarget = extractClosestEdge(self.data)
 				if (closestEdgeOfTarget === 'top') {
-					add_page_type_section(block_being_dragged, section_dragged_over_index)
+					// TODO: Implement
 				} else if (closestEdgeOfTarget === 'bottom') {
-					add_page_type_section(block_being_dragged, section_dragged_over_index + 1)
+					// TODO: Implement
 				}
 				reset_drag()
 			}
@@ -336,13 +330,15 @@
 		bind:node={block_toolbar_element}
 		id={hovered_section.id}
 		i={hovered_section.index}
-		on:delete={async () => delete_page_type_section(hovered_section.id)}
+		on:delete={async () => {
+			// TODO: Implement
+		}}
 		on:edit-code={() => edit_component(hovered_section.id, true)}
 		on:edit-content={() => edit_component(hovered_section.id)}
 		on:moveUp={async () => {
 			moving = true
 			hide_block_toolbar()
-			await move_section(hovered_section, hovered_section.index - 1)
+			// TODO: Implement
 			setTimeout(() => {
 				moving = false
 			}, 300)
@@ -350,7 +346,7 @@
 		on:moveDown={async () => {
 			moving = true
 			hide_block_toolbar()
-			await move_section(hovered_section, hovered_section.index + 1)
+			// TODO: Implement
 			setTimeout(() => {
 				moving = false
 			}, 300)

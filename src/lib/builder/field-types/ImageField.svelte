@@ -4,7 +4,6 @@
 	import TextInput from '../ui/TextInput.svelte'
 	import Spinner from '../ui/Spinner.svelte'
 	import site from '../stores/data/site.js'
-	import { storageChanged } from '../database.js'
 	import imageCompression from 'browser-image-compression'
 
 	const default_value = {
@@ -53,11 +52,7 @@
 
 		async function upload(file) {
 			const key = `${$site.id}/${file.lastModified + file.name}`
-			const { url, size } = await storageChanged({
-				action: 'upload',
-				key,
-				file
-			})
+			// TODO: Implement
 
 			if (url) {
 				image_preview = url

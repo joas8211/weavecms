@@ -9,7 +9,6 @@
 	import pages from '$lib/builder/stores/data/pages'
 	import page_types from '$lib/builder/stores/data/page_types'
 	import active_page from '$lib/builder/stores/data/page'
-	import actions from '$lib/builder/actions/pages'
 	import { content_editable, validate_url } from '$lib/builder/utilities'
 	import PageForm from './PageForm.svelte'
 	import MenuPopup from '$lib/builder/ui/Dropdown.svelte'
@@ -51,7 +50,7 @@
 	 * @param {{ name?: string, url?: string }} args
 	 */
 	function edit_page(args) {
-		actions.update(page.id, args)
+		// TODO: Implement
 	}
 
 	let drag_handle_element = $state()

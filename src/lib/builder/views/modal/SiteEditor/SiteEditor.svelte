@@ -6,7 +6,6 @@
 	import ModalHeader from '../ModalHeader.svelte'
 	import CodeEditor from '$lib/builder/components/CodeEditor/CodeMirror.svelte'
 	import modal from '$lib/builder/stores/app/modal'
-	import { update_site_code_and_content } from '$lib/builder/actions/active_site'
 	import site from '$lib/builder/stores/data/site'
 	import { userRole } from '$lib/builder/stores/app/misc'
 	import { setContext } from 'svelte'
@@ -20,11 +19,7 @@
 	let disableSave = false
 
 	async function saveComponent() {
-		update_site_code_and_content({
-			entries: local_content,
-			fields: local_fields,
-			code: local_code
-		})
+		// TODO: Implement
 		modal.hide()
 	}
 </script>

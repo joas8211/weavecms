@@ -6,7 +6,6 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Input } from '$lib/components/ui/input'
 	import EmptyState from '$lib/components/EmptyState.svelte'
-	import * as actions from '$lib/actions'
 	import { invalidate, goto } from '$app/navigation'
 	import { Separator } from '$lib/components/ui/separator'
 	import { Button } from '$lib/components/ui/button'
@@ -25,7 +24,7 @@
 	let { data } = $props()
 
 	async function create_site({ starter_id, details, duplication_source, preview }) {
-		await actions.sites.create({ starter_id, details, duplication_source, preview, group: active_site_group.id })
+		// TODO: Implement
 		invalidate('app:data')
 		creating_site = false
 	}
@@ -43,7 +42,7 @@
 	})
 	async function handle_rename(e) {
 		e.preventDefault()
-		await actions.rename_site_group(active_site_group.id, new_name)
+		// TODO: Implement
 		invalidate('app:data')
 		is_rename_open = false
 	}
@@ -52,7 +51,7 @@
 	let deleting = $state(false)
 	async function handle_delete() {
 		deleting = true
-		await actions.delete_site_group(active_site_group.id)
+		// TODO: Implement
 		invalidate('app:data')
 		deleting = false
 	}

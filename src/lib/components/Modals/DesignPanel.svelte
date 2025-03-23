@@ -11,14 +11,11 @@
 <script>
 	import Icon from '@iconify/svelte'
 	import { PaneGroup, Pane, PaneResizer } from 'paneforge'
-	import _, { cloneDeep, chain as _chain } from 'lodash-es'
+	import { cloneDeep, chain as _chain } from 'lodash-es'
 	import { ComponentPreview } from '$lib/builder/components'
 	import { onMobile } from '$lib/builder/stores/app'
-	// import { sites } from '../../../actions'
-	import active_site from '$lib/builder/actions/active_site'
 	import { page } from '$app/stores'
 	import { site } from '$lib/builder/stores/data/site'
-	import UI from '$lib/builder/ui'
 	import * as code_generators from '$lib/builder/code_generators'
 	import DesignFields from './DesignFields.svelte'
 	import ModalHeader from '$lib/components/ModalHeader.svelte'
@@ -59,11 +56,7 @@
 	}) // reset when code changes
 
 	async function saveComponent() {
-		if (!disableSave) {
-			active_site.update({
-				design: local_design_values
-			})
-		}
+		// TODO: Implement
 	}
 </script>
 

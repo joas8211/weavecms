@@ -22,7 +22,6 @@
 	import { page } from '$app/stores'
 	import { invalidate, goto } from '$app/navigation'
 	import { validate_symbol } from '$lib/builder/converter.js'
-	import { remap_entry_and_field_items } from '$lib/builder/actions/_db_utils'
 	import { useSidebar } from '$lib/components/ui/sidebar'
 	const sidebar = useSidebar()
 
@@ -46,10 +45,7 @@
 			const text = await file.text()
 			const uploaded = JSON.parse(text)
 			const validated = validate_symbol(uploaded)
-			remap_entry_and_field_items({
-				entries: validated.entries,
-				fields: validated.fields
-			})
+			// TODO: remap_entry_and_field_items
 			const component_data = transform_content({
 				entries: validated.entries,
 				fields: validated.fields

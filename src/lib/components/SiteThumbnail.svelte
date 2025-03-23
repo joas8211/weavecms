@@ -3,7 +3,6 @@
 	import SitePreview from '$lib/components/SitePreview.svelte'
 	import { EllipsisVertical, SquarePen, Trash2, Download, Loader, ArrowLeftRight } from 'lucide-svelte'
 	import { find as _find } from 'lodash-es'
-	import { supabase } from '$lib/supabase'
 	import { page } from '$app/stores'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import * as RadioGroup from '$lib/components/ui/radio-group'
@@ -11,10 +10,8 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Input } from '$lib/components/ui/input'
-	import { fetch_site_data, sites } from '$lib/actions'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { invalidate } from '$app/navigation'
-	import * as actions from '$lib/actions'
 
 	/**
 	 * @typedef {Object} Props
@@ -33,16 +30,11 @@
 	}
 
 	async function get_preview() {
-		const { data } = await supabase.storage.from('sites').download(`${site.id}/preview.html`)
-		const html = await data?.text()
-		preview = html
+		// TODO: Implement
 	}
 
 	async function download_site_file() {
-		const site_data = await fetch_site_data(site.id)
-		const json = JSON.stringify({ ...site_data, version: 3 })
-		var blob = new Blob([json], { type: 'application/json' })
-		fileSaver.saveAs(blob, `${site.name || site.id}.json`)
+		// TODO: Implement
 	}
 
 	let container = $state()
@@ -83,24 +75,18 @@
 	let new_name = $state(site.name)
 
 	async function handle_rename() {
-		is_rename_open = false
-		await actions.sites.update(site.id, { name: new_name })
-		invalidate('app:data')
+		// TODO: Implement
 	}
 
 	let deleting = $state(false)
 	async function delete_site() {
-		is_delete_open = false
-		await sites.delete(site.id)
-		invalidate('app:data')
+		// TODO: Implement
 	}
 
 	let is_move_open = $state(false)
 	let selected_group_id = $state(site.group)
 	async function move_site() {
-		is_move_open = false
-		await actions.sites.move(site.id, selected_group_id)
-		invalidate('app:data')
+		// TODO: Implement
 	}
 </script>
 

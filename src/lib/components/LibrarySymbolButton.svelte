@@ -6,14 +6,11 @@
 	import * as RadioGroup from '$lib/components/ui/radio-group'
 	import { Label } from '$lib/components/ui/label'
 	import { page } from '$app/stores'
-	import { supabase } from '$lib/supabase'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
-	import { Button, buttonVariants } from '$lib/components/ui/button'
+	import { Button } from '$lib/components/ui/button'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Input } from '$lib/components/ui/input'
-	import * as actions from '$lib/actions'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
-	import { invalidate } from '$app/navigation'
 
 	/**
 	 * @typedef {Object} Props
@@ -29,13 +26,7 @@
 		get_preview()
 	}
 	async function get_preview() {
-		const { data } = await supabase.storage.from('symbols').download(`${symbol.id}/preview.html`)
-		if (!data) {
-			console.error('Could not download symbol html')
-			return
-		}
-		const html = await data?.text()
-		preview = html
+		// TODO: Implement
 	}
 
 	let is_editor_open = $state(false)
@@ -44,32 +35,22 @@
 	let new_name = $state(symbol.name)
 
 	async function handle_rename(e) {
-		e.preventDefault()
-		await actions.rename_library_symbol(symbol.id, new_name)
-		invalidate('app:data')
-		is_rename_open = false
+		// TODO: Implement
 	}
 
 	async function save_symbol(data) {
-		preview = data.preview
-		await actions.save_library_symbol(symbol.id, data)
-		is_editor_open = false
-		invalidate('app:data')
+		// TODO: Implement
 	}
 
 	let is_move_open = $state(false)
 	let selected_group_id = $state(symbol.group)
 	async function move_symbol() {
-		is_move_open = false
-		await actions.move_library_symbol(symbol.id, selected_group_id)
-		invalidate('app:data')
+		// TODO: Implement
 	}
 
 	let deleting = $state(false)
 	async function delete_library_symbol() {
-		is_delete_open = false
-		await actions.delete_library_symbol(symbol.id)
-		invalidate('app:data')
+		// TODO: Implement
 	}
 </script>
 

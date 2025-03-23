@@ -6,7 +6,6 @@
 	import { find as _find } from 'lodash-es'
 	import { Button } from '$lib/components/ui/button'
 	import { invalidate } from '$app/navigation'
-	import * as actions from '$lib/actions'
 
 	/**
 	 * @typedef {Object} Props
@@ -54,21 +53,7 @@
 	let added_to_library = $state([])
 	let loading = $state(false)
 	async function add_to_library() {
-		loading = true
-		const { data } = await axios.get(`https://weave-marketplace.vercel.app/api/starters/${site.id}`)
-		console.log({ data })
-		await actions.create_starter({
-			details: {
-				name: data.site.name,
-				description: data.site.description
-			},
-			site_data: data,
-			preview
-		})
-		invalidate('app:data')
-		loading = false
-		added_to_library.push(site.id)
-		toast.success('Starter added to Library')
+		// TODO: Implement
 	}
 </script>
 

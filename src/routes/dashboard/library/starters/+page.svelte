@@ -7,7 +7,6 @@
 	import EmptyState from '$lib/components/EmptyState.svelte'
 	import { CirclePlus, LayoutTemplate } from 'lucide-svelte'
 	import SiteThumbnail from '$lib/components/SiteThumbnail.svelte'
-	import * as actions from '$lib/actions'
 	import { invalidate, goto } from '$app/navigation'
 
 	/**
@@ -19,7 +18,7 @@
 	let { data } = $props()
 
 	async function create_starter({ details, site_data, preview }) {
-		await actions.create_starter({ details, site_data, preview })
+		// TODO: Implement
 		invalidate('app:data')
 		creating_starter = false
 	}

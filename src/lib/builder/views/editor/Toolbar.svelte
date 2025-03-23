@@ -19,7 +19,6 @@
 	import { goto } from '$app/navigation'
 	import { active_users } from '$lib/builder/stores/app/misc'
 	import { timeline } from '$lib/builder/stores/data'
-	import { undo_change, redo_change } from '$lib/builder/actions/misc'
 
 	const dispatch = createEventDispatcher()
 
@@ -172,10 +171,26 @@
 				</div>
 			{/if}
 			{#if !$timeline.first}
-				<ToolbarButton id="undo" title="Undo" icon="material-symbols:undo" style="border: 0; font-size: 1.5rem;" on:click={undo_change} />
+				<ToolbarButton
+					id="undo"
+					title="Undo"
+					icon="material-symbols:undo"
+					style="border: 0; font-size: 1.5rem;"
+					on:click={() => {
+						// TODO: Implement
+					}}
+				/>
 			{/if}
 			{#if !$timeline.last}
-				<ToolbarButton id="redo" title="Redo" icon="material-symbols:redo" style="border: 0; font-size: 1.5rem;" on:click={redo_change} />
+				<ToolbarButton
+					id="redo"
+					title="Redo"
+					icon="material-symbols:redo"
+					style="border: 0; font-size: 1.5rem;"
+					on:click={() => {
+						// TODO: Implement
+					}}
+				/>
 			{/if}
 			{#if $userRole === 'DEV'}
 				<div class="button-group">

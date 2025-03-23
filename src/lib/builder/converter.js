@@ -2,7 +2,7 @@ import _ from 'lodash-es'
 import { v4 as uuidv4 } from 'uuid'
 import { createUniqueID } from './utilities.js'
 import { get_empty_value } from './utils.js'
-import { Field, Page, Site, Symbol } from './factories'
+import { Field, Page, Site, Symbol } from './factories.js'
 import * as constants from './constants.js'
 
 const NewField = (field) => {

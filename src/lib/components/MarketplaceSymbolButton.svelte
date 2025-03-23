@@ -6,11 +6,9 @@
 	import SitePreview from '$lib/components/SitePreview.svelte'
 	import { EllipsisVertical, Download, Code, CirclePlus, CircleCheck, Loader } from 'lucide-svelte'
 	import { find as _find } from 'lodash-es'
-	import { supabase } from '$lib/supabase'
 	import { Button, buttonVariants } from '$lib/components/ui/button'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Input } from '$lib/components/ui/input'
-	import * as actions from '$lib/actions'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import * as RadioGroup from '$lib/components/ui/radio-group'
 	import { invalidate } from '$app/navigation'
@@ -30,13 +28,7 @@
 		get_preview()
 	}
 	async function get_preview() {
-		const { data } = await supabase.storage.from('symbols').download(`${symbol.id}/preview.html`)
-		if (!data) {
-			console.error('Could not download symbol html')
-			return
-		}
-		const html = await data?.text()
-		preview = html
+		// TODO: Implement
 	}
 
 	let selected_group_id = $state($page.data.marketplace_symbol_groups[0]?.id ?? '')
@@ -44,10 +36,7 @@
 	let is_popover_open = $state(false)
 	let added_to_library = $state([])
 	async function add_to_library(group_id) {
-		toast.success('Block added to Library')
-		added_to_library.push(symbol.id)
-		await actions.add_marketplace_symbol_to_library({ symbol, preview, group_id })
-		invalidate('app:data')
+		// TODO: Implement
 	}
 </script>
 

@@ -18,7 +18,6 @@
 	import EmptyState from '$lib/components/EmptyState.svelte'
 	import { CirclePlus, Cuboid, Palette, Code, Upload, SquarePen, Trash2, ChevronDown, Loader } from 'lucide-svelte'
 	import LibrarySymbolButton from '$lib/components/LibrarySymbolButton.svelte'
-	import * as actions from '$lib/actions'
 	import { page } from '$app/stores'
 	import { invalidate, goto } from '$app/navigation'
 	import { validate_symbol } from '$lib/builder/converter.js'
@@ -38,50 +37,12 @@
 	let creating_block = $state(false)
 
 	async function upload_block_file(event) {
-		const active_group = $page.url.searchParams.get('group')
-		const file = event.target.files[0]
-		if (!file) return
-		try {
-			const text = await file.text()
-			const uploaded = JSON.parse(text)
-			const validated = validate_symbol(uploaded)
-			// TODO: remap_entry_and_field_items
-			const component_data = transform_content({
-				entries: validated.entries,
-				fields: validated.fields
-			})['en']
-			const generate_code = await block_html({ code: validated.code, data: component_data })
-			const preview = static_iframe_srcdoc(generate_code)
-			await actions.create_library_symbol({
-				name: validated.name,
-				code: validated.code,
-				content: {
-					entries: validated.entries,
-					fields: validated.fields
-				},
-				preview,
-				group: active_group
-			})
-			invalidate('app:data')
-		} catch (error) {
-			console.error('Error processing site file:', error)
-			// primo_json_valid = false
-		} finally {
-			// loading = false
-		}
+		// TODO: Implement
 	}
 
 	async function create_symbol({ code, content, preview }) {
 		const active_group = $page.url.searchParams.get('group')
-		await actions.create_library_symbol({
-			code,
-			content: {
-				entries: content.updated.entries,
-				fields: content.updated.fields
-			},
-			preview,
-			group: active_group
-		})
+		// TODO: Implement
 		invalidate('app:data')
 		creating_block = false
 	}
@@ -141,7 +102,7 @@
 	})
 	async function handle_rename(e) {
 		e.preventDefault()
-		await actions.rename_library_symbol_group(active_symbol_group.id, new_name)
+		// TODO: Implement
 		invalidate('app:data')
 		is_rename_open = false
 	}
@@ -151,7 +112,7 @@
 	async function handle_delete() {
 		deleting = true
 		await goto('/dashboard/library/starters')
-		await actions.delete_library_symbol_group(active_symbol_group.id)
+		// TODO: Implement
 		invalidate('app:data')
 		deleting = false
 	}

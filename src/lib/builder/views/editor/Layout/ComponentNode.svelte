@@ -25,13 +25,11 @@
 	import { hovering_outside } from '$lib/builder/utilities'
 	import { locale } from '$lib/builder/stores/app/misc'
 	import { site_html } from '$lib/builder/stores/app/page'
-	import { update_section_entries } from '$lib/builder/actions/sections'
 	import active_page from '$lib/builder/stores/data/page'
 	import site from '$lib/builder/stores/data/site'
 	import MarkdownButton from './MarkdownButton.svelte'
 	import modal from '$lib/builder/stores/app/modal'
 	import { get_content_with_synced_values } from '$lib/builder/stores/helpers'
-	import { broadcastChanged } from '$lib/builder/database'
 	import { component_iframe_srcdoc } from '$lib/builder/components/misc'
 
 	const lowlight = createLowlight(all)
@@ -51,15 +49,8 @@
 		})[$locale]
 	)
 
-	// let local_component_data
 	async function save_edited_value({ id, value }) {
-		// set local_component_data to avoid hydrating data when already changed on page
-		// if (key) {
-		// 	_.set(local_component_data, key, value)
-		// }
-		await update_section_entries({ id, value })
-		console.log('saving', { $active_page })
-		broadcastChanged({ page_id: $active_page.id })
+		// TODO: Implement
 	}
 
 	let floating_menu = $state()

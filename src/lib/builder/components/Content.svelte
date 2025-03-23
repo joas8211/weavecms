@@ -7,7 +7,6 @@
 	import active_page from '../stores/data/page.js'
 	import { is_regex, get_empty_value } from '../utils'
 	import { Content_Row } from '../factories'
-	import { dataChanged } from '../database.js'
 
 	/**
 	 * @typedef {Object} Props
@@ -138,13 +137,8 @@
 	}
 
 	async function get_source_content(field) {
-		const [source_entry] = await dataChanged({
-			table: 'entries',
-			action: 'select',
-			match: { field: field.source, page: $active_page.id }
-		})
-		const target_entry = entries.find((e) => e.field === field.id)
-		return source_entry ? { ...target_entry, value: source_entry.value } : target_entry
+		// TODO: Implement
+		throw new Error('Not implemented')
 	}
 
 	function belongs_to_current_page_type(field) {

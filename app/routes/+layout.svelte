@@ -1,4 +1,5 @@
 <script>
+	import '$lib/app.css'
 	import { setContext } from 'svelte'
 	import { browser } from '$app/environment'
 	import { compilers_registered } from '$lib/stores'
@@ -27,8 +28,6 @@
 </svelte:head>
 
 <style lang="postcss">
-	@import '../app.css';
-
 	:global(.primo-reset) {
 		font-family: 'Inter', serif !important;
 		direction: ltr;

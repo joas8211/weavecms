@@ -8,7 +8,7 @@ onRecordValidate((e) => {
     return;
   }
 
-  const { models } = require(__hooks + "/lib/index.cjs");
+  const { models } = require(__hooks + "/common/index.cjs");
   const collection = e.record.collection().name;
   const model = models[collection];
   if (!model) {

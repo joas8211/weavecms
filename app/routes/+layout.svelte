@@ -1,7 +1,6 @@
 <script>
 	import '$lib/app.css'
 	import { setContext } from 'svelte'
-	import { browser } from '$app/environment'
 	import { compilers_registered } from '$lib/stores'
 	import { registerProcessors } from '$lib/builder/component'
 	import Modal from '$lib/components/Modal.svelte'
@@ -9,13 +8,11 @@
 
 	let { children } = $props()
 
-	if (browser) {
-		import('$lib/compiler/processors').then(({ html, css }) => {
-			registerProcessors({ html, css })
-			$compilers_registered = true
-		})
-		setContext('track', () => {})
-	}
+	import('$lib/compiler/processors').then(({ html, css }) => {
+		registerProcessors({ html, css })
+		$compilers_registered = true
+	})
+	setContext('track', () => {})
 </script>
 
 <Modal />

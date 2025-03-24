@@ -12,6 +12,7 @@
 	import { Input } from '$lib/components/ui/input'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { invalidate } from '$app/navigation'
+	import { Sites } from '$lib/pocketbase/collections'
 
 	/**
 	 * @typedef {Object} Props
@@ -80,7 +81,10 @@
 
 	let deleting = $state(false)
 	async function delete_site() {
-		// TODO: Implement
+		deleting = true
+		await Sites.delete(site.id)
+		deleting = false
+		is_delete_open = false
 	}
 
 	let is_move_open = $state(false)

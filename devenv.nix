@@ -12,6 +12,6 @@
   processes = {
     app-dev.exec = "vite --config app.config.js dev";
     common-build.exec = "vite --config common.config.js build --watch";
-    pocketbase.exec = "vite --config common.config.js build && pocketbase serve";
+    pocketbase.exec = "vite --config common.config.js build && pocketbase serve --dev";
   };
 }

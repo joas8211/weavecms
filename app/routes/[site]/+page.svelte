@@ -1,16 +1,16 @@
 <script>
-	import Icon from '@iconify/svelte'
 	import { compilers_registered } from '$lib/stores'
 	import PrimoPage from '$lib/builder/views/editor/Page.svelte'
 
-	let { data } = $props();
+	const page = {}
+	const sections = []
 </script>
 
 {#if $compilers_registered}
 	<PrimoPage
 		page={{
-			...data.page,
-			sections: data.sections
+			...page,
+			sections: sections
 		}}
 	/>
 {/if}

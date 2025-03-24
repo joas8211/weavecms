@@ -4,7 +4,7 @@ export default defineConfig({
   build: {
     outDir: "pb_hooks/common",
     lib: {
-      entry: "common/index.ts",
+      entry: "app/lib/common/index.ts",
       formats: ["cjs"],
       fileName: "index",
     },

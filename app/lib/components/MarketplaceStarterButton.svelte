@@ -1,20 +1,12 @@
 <script>
-	import axios from 'axios'
-	import { toast } from 'svelte-sonner'
 	import SitePreview from '$lib/components/SitePreview.svelte'
 	import { CircleCheck, CirclePlus, Loader } from 'lucide-svelte'
 	import { find as _find } from 'lodash-es'
 	import { Button } from '$lib/components/ui/button'
-	import { invalidate } from '$app/navigation'
+	import { Sites } from '$lib/pocketbase/collections'
+	import { toast } from 'svelte-sonner'
+	import { user } from '$lib/pocketbase/PocketBase'
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {import('$lib').Site} site
-	 * @property {any} [preview]
-	 * @property {string} [append]
-	 */
-
-	/** @type {Props} */
 	let { site, preview = $bindable(null), append = '' } = $props()
 
 	let container = $state()
@@ -53,7 +45,19 @@
 	let added_to_library = $state([])
 	let loading = $state(false)
 	async function add_to_library() {
-		// TODO: Implement
+		loading = true
+		const { name, code, design } = site
+		await Sites.create({
+			name,
+			owner: user().id,
+			group: '',
+			code,
+			design,
+			isStarter: true
+		})
+		loading = false
+		added_to_library.push(site.id)
+		toast.success('Starter added to Library')
 	}
 </script>
 

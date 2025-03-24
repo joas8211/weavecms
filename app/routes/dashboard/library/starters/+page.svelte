@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog'
 	import * as Sidebar from '$lib/components/ui/sidebar'
 	import { Separator } from '$lib/components/ui/separator'
@@ -7,7 +7,10 @@
 	import EmptyState from '$lib/components/EmptyState.svelte'
 	import { CirclePlus, LayoutTemplate } from 'lucide-svelte'
 	import SiteThumbnail from '$lib/components/SiteThumbnail.svelte'
-	import { invalidate, goto } from '$app/navigation'
+	import { user } from '$lib/pocketbase/PocketBase'
+	import { onMount } from 'svelte'
+	import { Sites } from '$lib/pocketbase/collections'
+	import type { Site } from '$lib/common/models/Site'
 
 	/**
 	 * @typedef {Object} Props
@@ -19,11 +22,15 @@
 
 	async function create_starter({ details, site_data, preview }) {
 		// TODO: Implement
-		invalidate('app:data')
 		creating_starter = false
 	}
 
 	let creating_starter = $state(false)
+
+	let starters: Site[] = $state([])
+	onMount(async () => {
+		starters = await Sites.getFullList({ filter: 'isStarter = true' })
+	})
 </script>
 
 <header class="flex h-14 shrink-0 items-center gap-2">
@@ -32,7 +39,8 @@
 		<Separator orientation="vertical" class="mr-2 h-4" />
 		<div class="text-sm">Starters</div>
 	</div>
-	{#if !data.user.collaborator}
+	<!-- TODO: Not collaborator -->
+	{#if user()}
 		<div class="ml-auto mr-4">
 			<Button size="sm" variant="outline" onclick={() => (creating_starter = true)}>
 				<CirclePlus class="h-4 w-4" />
@@ -47,10 +55,10 @@
 	{/if}
 </header>
 <div class="flex flex-1 flex-col gap-4 px-4 pb-4">
-	{#if data.starters.length > 0}
+	{#if starters.length > 0}
 		<div class="sites-container">
 			<ul class="sites">
-				{#each data.starters as site (site.id)}
+				{#each starters as site (site.id)}
 					<li>
 						<SiteThumbnail {site} />
 					</li>

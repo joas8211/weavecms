@@ -14,9 +14,6 @@ const config = {
 			assets: "app/assets",
 			lib: "app/lib",
 			routes: "app/routes",
-		},
-		alias: {
-			"$common": "common"
 		}
 	},
 	vitePlugin: {

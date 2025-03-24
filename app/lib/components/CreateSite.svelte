@@ -13,8 +13,11 @@
 	import * as code_generators from '$lib/builder/code_generators'
 	import { page } from '$app/stores'
 	import EmptyState from '$lib/components/EmptyState.svelte'
+	import type { Site } from '$lib/common/models/Site'
+	import { onMount } from 'svelte'
+	import { Sites } from '$lib/pocketbase/collections'
 
-	let { onclose, onsubmit } = $props()
+	let { onsubmit } = $props()
 
 	let site_name = $state(``)
 
@@ -54,7 +57,7 @@
 		selected_theme_id = theme.id
 	}
 
-	let duplicated_site_data = $state<import('$lib').Site_Data | null>(null)
+	let duplicated_site_data = $state(null)
 	async function duplicate_site_file(event) {
 		const file = event.target.files[0]
 		if (!file) return
@@ -88,6 +91,11 @@
 			preview
 		})
 	}
+
+	let starters: Site[] = $state([])
+	onMount(async () => {
+		starters = await Sites.getFullList({ filter: 'isStarter = true' })
+	})
 </script>
 
 <Dialog.Header
@@ -151,7 +159,7 @@
 						</label>
 					</Button>
 				</div>
-				{#if $page.data.starters.length > 0 || duplicated_site_data}
+				{#if starters.length > 0 || duplicated_site_data}
 					<div class="split-container flex-1">
 						<div class="h-[77vh] overflow-auto">
 							<Themes on:select={({ detail }) => select_theme(detail)} append={design_variables_css} />

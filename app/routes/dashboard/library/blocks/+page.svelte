@@ -43,7 +43,6 @@
 	async function create_symbol({ code, content, preview }) {
 		const active_group = $page.url.searchParams.get('group')
 		// TODO: Implement
-		invalidate('app:data')
 		creating_block = false
 	}
 
@@ -103,7 +102,6 @@
 	async function handle_rename(e) {
 		e.preventDefault()
 		// TODO: Implement
-		invalidate('app:data')
 		is_rename_open = false
 	}
 
@@ -113,7 +111,6 @@
 		deleting = true
 		await goto('/dashboard/library/starters')
 		// TODO: Implement
-		invalidate('app:data')
 		deleting = false
 	}
 </script>

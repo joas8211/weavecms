@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { users } from '$lib/pocketbase/collections'
+	import { Users } from '$lib/pocketbase/collections'
 	import { Loader } from 'lucide-svelte'
 
 	type AuthAction = 'sign_in' | 'sign_up' | 'reset_password' | 'confirm_password_reset'
@@ -13,8 +13,7 @@
 		switch (action) {
 			case 'sign_in':
 				loading = true
-				await users
-					.authWithPassword(email, password)
+				await Users.authWithPassword(email, password)
 					.then(() => goto('/dashboard'))
 					.catch(({ message }) => {
 						error = message
@@ -25,7 +24,7 @@
 				throw new Error('Not implemented')
 			case 'reset_password':
 				loading = true
-				await users.requestPasswordReset(email).catch(({ message }) => {
+				await Users.requestPasswordReset(email).catch(({ message }) => {
 					error = message
 				})
 				loading = false

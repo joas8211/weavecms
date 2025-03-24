@@ -1,41 +1,43 @@
-<script>
+<script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar'
 	import { Separator } from '$lib/components/ui/separator'
 	import EmptyState from '$lib/components/EmptyState.svelte'
 	import { LayoutTemplate } from 'lucide-svelte'
 	import MarketplaceStarterButton from '$lib/components/MarketplaceStarterButton.svelte'
+	import type { Site } from '$lib/common/models/Site'
+	import { onMount } from 'svelte'
+	import { Sites } from '$lib/pocketbase/collections'
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} data
-	 */
-
-	/** @type {Props} */
-	let { data } = $props()
+	let starters: { id: string; data: Site; preview: string }[] | undefined = $state()
+	onMount(async () => {
+		starters = await fetch('https://weave-marketplace.vercel.app/api/starters').then((response) => response.json())
+	})
 </script>
 
-<header class="flex h-14 shrink-0 items-center gap-2">
-	<div class="flex flex-1 items-center gap-2 px-3">
-		<Sidebar.Trigger />
-		<Separator orientation="vertical" class="mr-2 h-4" />
-		<div class="text-sm">Starters</div>
-	</div>
-</header>
-<div class="flex flex-1 flex-col gap-4 px-4 pb-4">
-	{#if data.starters.length > 0}
-		<div class="sites-container">
-			<ul class="sites">
-				{#each data.starters as site (site.id)}
-					<li>
-						<MarketplaceStarterButton site={site.data} preview={site.preview} />
-					</li>
-				{/each}
-			</ul>
+{#if starters}
+	<header class="flex h-14 shrink-0 items-center gap-2">
+		<div class="flex flex-1 items-center gap-2 px-3">
+			<Sidebar.Trigger />
+			<Separator orientation="vertical" class="mr-2 h-4" />
+			<div class="text-sm">Starters</div>
 		</div>
-	{:else}
-		<EmptyState icon={LayoutTemplate} title="No Starters to display" description="Starters are starting points for your sites. When you create one it'll show up here." />
-	{/if}
-</div>
+	</header>
+	<div class="flex flex-1 flex-col gap-4 px-4 pb-4">
+		{#if starters.length > 0}
+			<div class="sites-container">
+				<ul class="sites">
+					{#each starters as site (site.id)}
+						<li>
+							<MarketplaceStarterButton site={site.data} preview={site.preview} />
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{:else}
+			<EmptyState icon={LayoutTemplate} title="No Starters to display" description="Starters are starting points for your sites. When you create one it'll show up here." />
+		{/if}
+	</div>
+{/if}
 
 <style lang="postcss">
 	.sites-container {

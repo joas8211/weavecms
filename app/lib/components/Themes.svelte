@@ -4,6 +4,7 @@
 	// import ThemeThumbnail from '$lib/components/ThemeThumbnail.svelte'
 	import StarterButton from '$lib/components/StarterButton.svelte'
 	import { page } from '$app/stores'
+	import { Sites } from '$lib/pocketbase/collections'
 
 	/**
 	 * @typedef {Object} Props
@@ -16,8 +17,9 @@
 	let themes = $state([])
 	fetch_themes()
 	async function fetch_themes() {
+		const starters = await Sites.getFullList({ filter: 'isStarter = true' })
 		themes = await Promise.all(
-			$page.data.starters.map(async ({ id, name }) => {
+			starters.map(async ({ id, name }) => {
 				const preview = await download_file(id, 'preview.html')
 				return { id, name, preview }
 			})

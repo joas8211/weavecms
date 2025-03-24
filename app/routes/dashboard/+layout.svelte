@@ -13,7 +13,13 @@
 		}
 	})
 
-	let { data, children } = $props()
+	let { children } = $props()
+
+	// TODO: Retrieve data
+	let data = {
+		site_groups: [],
+		symbol_groups: []
+	}
 
 	const sidebar_menu = $derived.by(() => {
 		const pathname = $page.url.pathname

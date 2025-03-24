@@ -9,7 +9,7 @@
 	let { children } = $props()
 
 	if (browser) {
-		import('../compiler/processors').then(({ html, css }) => {
+		import('$lib/compiler/processors').then(({ html, css }) => {
 			registerProcessors({ html, css })
 			$compilers_registered = true
 		})

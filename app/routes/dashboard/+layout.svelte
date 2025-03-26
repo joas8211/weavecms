@@ -6,6 +6,10 @@
 	import { pb } from '$lib/pocketbase/PocketBase'
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
+	import { require_site_groups, require_symbol_groups } from './data'
+
+	let site_groups = require_site_groups()
+	let symbol_groups = require_symbol_groups()
 
 	onMount(async () => {
 		if (!pb.authStore.isValid) {
@@ -15,12 +19,6 @@
 
 	let { children } = $props()
 
-	// TODO: Load data with possibility to trigger refetch
-	let data = {
-		site_groups: [],
-		symbol_groups: []
-	}
-
 	const sidebar_menu = $derived.by(() => {
 		const pathname = $page.url.pathname
 		const path = pathname.split('/').slice(0, 3).join('/')
@@ -28,7 +26,7 @@
 			'/dashboard/sites': {
 				title: 'Sites',
 				icon: Globe,
-				site_groups: data.site_groups
+				site_groups: $site_groups
 			},
 			'/dashboard/library': {
 				title: 'Library',
@@ -45,7 +43,7 @@
 						label: 'Blocks',
 						url: '/dashboard/library/blocks',
 						isActive: pathname === '/dashboard/library/blocks',
-						items: data.symbol_groups
+						items: $symbol_groups
 					}
 				]
 			},

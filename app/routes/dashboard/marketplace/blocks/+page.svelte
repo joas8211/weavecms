@@ -6,14 +6,9 @@
 	import EmptyState from '$lib/components/EmptyState.svelte'
 	import { Cuboid, Code } from 'lucide-svelte'
 	import MarketplaceSymbolButton from '$lib/components/MarketplaceSymbolButton.svelte'
+	import { require_marketplace_symbols } from '../../data'
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} data
-	 */
-
-	/** @type {Props} */
-	let { data } = $props()
+	let marketplace_symbols = require_marketplace_symbols()
 
 	let design_variables_css = ''
 
@@ -51,9 +46,9 @@
 </header>
 
 <div class="flex flex-1 flex-col gap-4 px-4 pb-4">
-	{#if data.marketplace_symbols.length > 0}
+	{#if $marketplace_symbols.length > 0}
 		<ul class="blocks">
-			{#each data.marketplace_symbols as symbol (symbol.id)}
+			{#each $marketplace_symbols as symbol (symbol.id)}
 				<li>
 					<MarketplaceSymbolButton symbol={symbol.data} preview={symbol.preview} head={generated_head_code + design_variables_css} />
 				</li>

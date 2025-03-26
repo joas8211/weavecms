@@ -7,28 +7,24 @@
 	import { Input } from '$lib/components/ui/input'
 	import EmptyState from '$lib/components/EmptyState.svelte'
 	import * as actions from '$lib/actions'
-	import { invalidate, goto } from '$app/navigation'
 	import { Separator } from '$lib/components/ui/separator'
 	import { Button } from '$lib/components/ui/button'
 	import { CirclePlus, Globe, Loader, ChevronDown, SquarePen, Trash2 } from 'lucide-svelte'
 	import CreateSite from '$lib/components/CreateSite.svelte'
 	import { page } from '$app/stores'
 	import { useSidebar } from '$lib/components/ui/sidebar'
-	const sidebar = useSidebar()
+	import { invalidate_all, require_site_groups } from '../data'
 
-	// TODO: Load data with possibility to trigger refetch
-	let data = {
-		site_groups: [],
-		symbol_groups: []
-	}
+	const sidebar = useSidebar()
+	const site_groups = require_site_groups()
 
 	async function create_site({ starter_id, details, duplication_source, preview }) {
 		await actions.sites.create({ starter_id, details, duplication_source, preview, group: active_site_group.id })
-		// TODO: Refetch data
+		invalidate_all()
 		creating_site = false
 	}
 
-	const active_site_group = $derived(data.site_groups.find((g) => String(g.id) === $page.url.searchParams.get('group')))
+	const active_site_group = $derived($site_groups.find((g) => String(g.id) === $page.url.searchParams.get('group')))
 
 	let creating_site = $state(false)
 
@@ -42,7 +38,7 @@
 	async function handle_rename(e) {
 		e.preventDefault()
 		await actions.rename_site_group(active_site_group.id, new_name)
-		// TODO: Refetch data
+		invalidate_all()
 		is_rename_open = false
 	}
 
@@ -51,7 +47,7 @@
 	async function handle_delete() {
 		deleting = true
 		await actions.delete_site_group(active_site_group.id)
-		// TODO: Refetch data
+		invalidate_all()
 		deleting = false
 	}
 </script>
@@ -115,7 +111,7 @@
 					<SquarePen class="text-muted-foreground" />
 					<span>Rename</span>
 				</DropdownMenu.Item>
-				{#if data.site_groups.length > 1}
+				{#if $site_groups.length > 1}
 					<DropdownMenu.Item onclick={() => (is_delete_open = true)}>
 						<Trash2 class="text-muted-foreground" />
 						<span>Delete</span>

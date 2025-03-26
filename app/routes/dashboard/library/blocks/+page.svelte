@@ -24,15 +24,13 @@
 	import { validate_symbol } from '$lib/builder/converter.js'
 	import { remap_entry_and_field_items } from '$lib/builder/actions/_db_utils'
 	import { useSidebar } from '$lib/components/ui/sidebar'
+	import { invalidate_all, require_library_settings, require_symbol_groups } from '../../data'
+	import { user } from '$lib/pocketbase/PocketBase'
+
 	const sidebar = useSidebar()
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} data
-	 */
-
-	/** @type {Props} */
-	let { data } = $props()
+	let library_settings = require_library_settings()
+	let symbol_groups = require_symbol_groups()
 
 	let editing_head = $state(false)
 	let editing_design = $state(false)
@@ -66,7 +64,7 @@
 				preview,
 				group: active_group
 			})
-			// TODO: Refetch data
+			invalidate_all()
 		} catch (error) {
 			console.error('Error processing site file:', error)
 			// primo_json_valid = false
@@ -86,18 +84,18 @@
 			preview,
 			group: active_group
 		})
-		// TODO: Refetch data
+		invalidate_all()
 		creating_block = false
 	}
 
-	let design = $state(data.settings.design)
+	let design = $state($library_settings.design)
 	let design_variables_css = $state(code_generators.site_design_css(design))
 	function update_design_value(token, value) {
 		design[token] = value
 		design_variables_css = code_generators.site_design_css(design)
 	}
 
-	let head_code = $state(data.settings.head)
+	let head_code = $state($library_settings.head)
 	let generated_head_code = $state('')
 
 	// Generate <head> tag code
@@ -123,17 +121,11 @@
 
 	let loading = $state(false)
 	async function save_settings() {
-		loading = true
-		await data.supabase
-			.from('library_settings')
-			.update({ value: { head: head_code, design } })
-			.match({ key: 'blocks', owner: data.user.id })
-		editing_head = false
-		editing_design = false
-		loading = false
+		// TODO: Implement
+		throw new Error('Not implemented')
 	}
 
-	const active_symbol_group = $derived(data.symbol_groups.find((g) => String(g.id) === $page.url.searchParams.get('group')))
+	const active_symbol_group = $derived($symbol_groups.find((g) => String(g.id) === $page.url.searchParams.get('group')))
 	const visible_symbols = $derived(active_symbol_group?.symbols || [])
 
 	let is_rename_open = $state(false)
@@ -227,7 +219,8 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</div>
-	{#if !data.user.collaborator}
+	<!-- TODO: User not collaborator -->
+	{#if !user()}
 		<div class="ml-auto mr-4 flex gap-2">
 			<Button size="sm" variant="ghost" onclick={() => (editing_head = true)} aria-label="Design">
 				<Code class="h-4 w-4" />

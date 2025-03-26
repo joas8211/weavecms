@@ -14,6 +14,7 @@
 	import * as RadioGroup from '$lib/components/ui/radio-group'
 	import { invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
+	import { require_marketplace_symbol_groups } from '../../routes/dashboard/data'
 
 	/**
 	 * @typedef {Object} Props
@@ -32,7 +33,8 @@
 		// TODO: Implement
 	}
 
-	let selected_group_id = $state($page.data.marketplace_symbol_groups[0]?.id ?? '')
+	let marketplace_symbol_groups = require_marketplace_symbol_groups()
+	let selected_group_id = $state($marketplace_symbol_groups[0]?.id ?? '')
 
 	let is_popover_open = $state(false)
 	let added_to_library = $state([])

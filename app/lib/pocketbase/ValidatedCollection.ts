@@ -1,23 +1,25 @@
-import type { z } from 'zod'
-import type { RecordFullListOptions, RecordListOptions, RecordModel } from 'pocketbase'
+import type { RecordFullListOptions, RecordListOptions, RecordModel, RecordOptions } from 'pocketbase'
+import { z } from 'zod'
 import { pb } from './PocketBase'
 
 export const createValidatedCollection = <T extends z.AnyZodObject>(idOrName: string, schema: T) => {
 	type Values = z.TypeOf<T>
+	type ValuesWithExpand = Values & { expand?: { [key: string]: any } }
 	type Record = RecordModel & Values
 	const collection = pb.collection<Record>(idOrName)
+	const schemaWithExpand = schema.extend({ expand: z.record(z.any()).optional() })
 	return {
-		getOne: async (id: string): Promise<Values> => {
-			const record = await collection.getOne(id)
-			return schema.parse(record)
+		getOne: async (id: string, options?: RecordOptions): Promise<ValuesWithExpand> => {
+			const record = await collection.getOne(id, options)
+			return schemaWithExpand.parse(record) as ValuesWithExpand
 		},
-		getList: async (page?: number, perPage?: number, options?: RecordListOptions): Promise<Values[]> => {
+		getList: async (page?: number, perPage?: number, options?: RecordListOptions): Promise<ValuesWithExpand[]> => {
 			const result = await collection.getList(page, perPage, options)
-			return result.items.map((record) => schema.parse(record))
+			return result.items.map((record) => schemaWithExpand.parse(record) as ValuesWithExpand)
 		},
-		getFullList: async (options?: RecordFullListOptions): Promise<Values[]> => {
+		getFullList: async (options?: RecordFullListOptions): Promise<ValuesWithExpand[]> => {
 			const records = await collection.getFullList(options)
-			return records.map((record) => schema.parse(record))
+			return records.map((record) => schemaWithExpand.parse(record) as ValuesWithExpand)
 		},
 		create: async (values: Values): Promise<Values> => {
 			const input = schema.parse(values)

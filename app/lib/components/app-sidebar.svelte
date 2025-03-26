@@ -12,7 +12,7 @@
 	import * as Collapsible from '$lib/components/ui/collapsible'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js'
-	import { user } from '$lib/pocketbase/PocketBase'
+	import { pb, user } from '$lib/pocketbase/PocketBase'
 
 	const sidebar = useSidebar()
 
@@ -175,10 +175,10 @@
 								<Sidebar.MenuButton {...props} size="lg" class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0">
 									<Avatar.Root class="h-8 w-8 rounded-lg">
 										<!-- <Avatar.Image src={user.avatar} alt={user.name} /> -->
-										<Avatar.Fallback class="rounded-lg uppercase">{user().email.slice(0, 2)}</Avatar.Fallback>
+										<Avatar.Fallback class="rounded-lg uppercase">{user()?.email.slice(0, 2)}</Avatar.Fallback>
 									</Avatar.Root>
 									<div class="grid flex-1 text-left text-sm leading-tight">
-										<span class="truncate font-semibold">{user().email}</span>
+										<span class="truncate font-semibold">{user()?.email}</span>
 										<!-- <span class="truncate text-xs">{user.email}</span> -->
 									</div>
 									<ChevronsUpDown class="ml-auto size-4" />
@@ -190,10 +190,10 @@
 								<div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 									<Avatar.Root class="h-8 w-8 rounded-lg">
 										<!-- <Avatar.Image src={user.avatar} alt={user.name} /> -->
-										<Avatar.Fallback class="rounded-lg uppercase">{user().email.slice(0, 2)}</Avatar.Fallback>
+										<Avatar.Fallback class="rounded-lg uppercase">{user()?.email.slice(0, 2)}</Avatar.Fallback>
 									</Avatar.Root>
 									<div class="grid flex-1 text-left text-sm leading-tight">
-										<span class="truncate font-semibold">{user().email}</span>
+										<span class="truncate font-semibold">{user()?.email}</span>
 										<!-- <span class="truncate text-xs">{user.email}</span> -->
 									</div>
 								</div>
@@ -201,8 +201,8 @@
 							<DropdownMenu.Separator />
 							<DropdownMenu.Item
 								onclick={async () => {
-									// TODO: Implement
-									throw new Error('Not implemented')
+									pb.authStore.clear()
+									await goto('/auth')
 								}}
 							>
 								<LogOut />
@@ -351,7 +351,7 @@
 								<Collapsible.Content>
 									<Sidebar.GroupContent>
 										<Sidebar.Menu>
-											{#each $page.data.marketplace_symbol_groups as group}
+											{#each sidebar_menu.marketplace_symbol_groups as group}
 												{@const url = `/dashboard/marketplace/blocks?group=${group.id}`}
 												<Sidebar.MenuItem>
 													<Sidebar.MenuButton isActive={$page.url.pathname + $page.url.search === url}>

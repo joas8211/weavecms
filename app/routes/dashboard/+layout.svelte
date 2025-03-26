@@ -6,10 +6,11 @@
 	import { pb } from '$lib/pocketbase/PocketBase'
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
-	import { require_site_groups, require_symbol_groups } from './data'
+	import { require_site_groups, require_library_symbol_groups, require_marketplace_symbol_groups } from './data'
 
 	let site_groups = require_site_groups()
-	let symbol_groups = require_symbol_groups()
+	let library_symbol_groups = require_library_symbol_groups()
+	let marketplace_symbol_groups = require_marketplace_symbol_groups()
 
 	onMount(async () => {
 		if (!pb.authStore.isValid) {
@@ -43,13 +44,14 @@
 						label: 'Blocks',
 						url: '/dashboard/library/blocks',
 						isActive: pathname === '/dashboard/library/blocks',
-						items: $symbol_groups
+						items: $library_symbol_groups
 					}
 				]
 			},
 			'/dashboard/marketplace': {
 				title: 'Marketplace',
 				icon: Store,
+				marketplace_symbol_groups: $marketplace_symbol_groups,
 				buttons: [
 					{
 						icon: LayoutTemplate,

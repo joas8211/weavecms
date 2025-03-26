@@ -14,17 +14,25 @@
 	import { page } from '$app/stores'
 	import { useSidebar } from '$lib/components/ui/sidebar'
 	import { invalidate_all, require_site_groups } from '../data'
+	import { goto } from '$app/navigation'
 
 	const sidebar = useSidebar()
 	const site_groups = require_site_groups()
 
 	async function create_site({ starter_id, details, duplication_source, preview }) {
+		if (!active_site_group) return
 		await actions.sites.create({ starter_id, details, duplication_source, preview, group: active_site_group.id })
 		invalidate_all()
 		creating_site = false
 	}
 
-	const active_site_group = $derived($site_groups.find((g) => String(g.id) === $page.url.searchParams.get('group')))
+	let groupId = $derived($page.url.searchParams.get('group'))
+	let active_site_group = $derived($site_groups.find((g) => String(g.id) === groupId))
+	$effect(() => {
+		if (!groupId && $site_groups.length > 0) {
+			goto('?group=' + $site_groups[0].id, {})
+		}
+	})
 
 	let creating_site = $state(false)
 
@@ -37,6 +45,7 @@
 	})
 	async function handle_rename(e) {
 		e.preventDefault()
+		if (!active_site_group) return
 		await actions.rename_site_group(active_site_group.id, new_name)
 		invalidate_all()
 		is_rename_open = false
@@ -45,6 +54,7 @@
 	let is_delete_open = $state(false)
 	let deleting = $state(false)
 	async function handle_delete() {
+		if (!active_site_group) return
 		deleting = true
 		await actions.delete_site_group(active_site_group.id)
 		invalidate_all()
@@ -71,7 +81,7 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you sure?</AlertDialog.Title>
 			<AlertDialog.Description>
-				This action cannot be undone. This will permanently delete <strong>{active_site_group.name}</strong>
+				This action cannot be undone. This will permanently delete <strong>{active_site_group?.name}</strong>
 				and
 				<strong>all</strong>
 				its sites.
@@ -85,7 +95,7 @@
 						<Loader />
 					</div>
 				{:else}
-					Delete {active_site_group.name}
+					Delete {active_site_group?.name}
 				{/if}
 			</AlertDialog.Action>
 		</AlertDialog.Footer>
@@ -96,7 +106,7 @@
 	<div class="flex flex-1 items-center gap-2 px-3">
 		<Sidebar.Trigger />
 		<Separator orientation="vertical" class="mr-2 h-4" />
-		<div class="text-sm">{active_site_group.name}</div>
+		<div class="text-sm">{active_site_group?.name}</div>
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				{#snippet child({ props })}
@@ -133,10 +143,10 @@
 	</div>
 </header>
 <div class="flex flex-1 flex-col gap-4 px-4 pb-4">
-	{#if active_site_group.sites.length > 0}
+	{#if active_site_group?.sites.length > 0}
 		<div class="sites-container">
 			<ul class="sites">
-				{#each active_site_group.sites as site (site.id)}
+				{#each active_site_group?.sites as site (site.id)}
 					<li>
 						<SiteThumbnail {site} />
 					</li>

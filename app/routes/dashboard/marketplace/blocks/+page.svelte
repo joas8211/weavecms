@@ -7,8 +7,9 @@
 	import { Cuboid, Code } from 'lucide-svelte'
 	import MarketplaceSymbolButton from '$lib/components/MarketplaceSymbolButton.svelte'
 	import { require_marketplace_symbols } from '../../data'
+	import { page } from '$app/stores'
 
-	let marketplace_symbols = require_marketplace_symbols()
+	let marketplace_symbols = $derived(require_marketplace_symbols(+($page.url.searchParams.get('group') ?? 0)))
 
 	let design_variables_css = ''
 

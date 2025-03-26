@@ -12,10 +12,11 @@
 	import { Input } from '$lib/components/ui/input'
 	import * as actions from '$lib/actions'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
+	import { LibrarySymbol } from '$lib/common/models/LibrarySymbol'
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {import('$lib').Symbol} symbol
+	 * @property {LibrarySymbol} symbol
 	 * @property {string | null} [preview]
 	 * @property {string} [head]
 	 */

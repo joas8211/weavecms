@@ -24,13 +24,13 @@
 	import { validate_symbol } from '$lib/builder/converter.js'
 	import { remap_entry_and_field_items } from '$lib/builder/actions/_db_utils'
 	import { useSidebar } from '$lib/components/ui/sidebar'
-	import { invalidate_all, require_library_settings, require_symbol_groups } from '../../data'
+	import { invalidate_all, require_library_settings, require_library_symbol_groups } from '../../data'
 	import { user } from '$lib/pocketbase/PocketBase'
 
 	const sidebar = useSidebar()
 
 	let library_settings = require_library_settings()
-	let symbol_groups = require_symbol_groups()
+	let library_symbol_groups = require_library_symbol_groups()
 
 	let editing_head = $state(false)
 	let editing_design = $state(false)
@@ -38,6 +38,7 @@
 
 	async function upload_block_file(event) {
 		const active_group = $page.url.searchParams.get('group')
+		if (!active_group) return
 		const file = event.target.files[0]
 		if (!file) return
 		try {
@@ -75,6 +76,7 @@
 
 	async function create_symbol({ code, content, preview }) {
 		const active_group = $page.url.searchParams.get('group')
+		if (!active_group) return
 		await actions.create_library_symbol({
 			code,
 			content: {
@@ -88,14 +90,14 @@
 		creating_block = false
 	}
 
-	let design = $state($library_settings.design)
+	let design = $state($library_settings.value.design)
 	let design_variables_css = $state(code_generators.site_design_css(design))
 	function update_design_value(token, value) {
 		design[token] = value
 		design_variables_css = code_generators.site_design_css(design)
 	}
 
-	let head_code = $state($library_settings.head)
+	let head_code = $state($library_settings.value.head)
 	let generated_head_code = $state('')
 
 	// Generate <head> tag code
@@ -125,7 +127,7 @@
 		throw new Error('Not implemented')
 	}
 
-	const active_symbol_group = $derived($symbol_groups.find((g) => String(g.id) === $page.url.searchParams.get('group')))
+	const active_symbol_group = $derived($library_symbol_groups.find((g) => String(g.id) === $page.url.searchParams.get('group')))
 	const visible_symbols = $derived(active_symbol_group?.symbols || [])
 
 	let is_rename_open = $state(false)
@@ -137,6 +139,7 @@
 	})
 	async function handle_rename(e) {
 		e.preventDefault()
+		if (!active_symbol_group) return
 		await actions.rename_library_symbol_group(active_symbol_group.id, new_name)
 		// TODO: Refetch data
 		is_rename_open = false
@@ -145,6 +148,7 @@
 	let is_delete_open = $state(false)
 	let deleting = $state(false)
 	async function handle_delete() {
+		if (!active_symbol_group) return
 		deleting = true
 		await goto('/dashboard/library/starters')
 		await actions.delete_library_symbol_group(active_symbol_group.id)
@@ -172,7 +176,7 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you sure?</AlertDialog.Title>
 			<AlertDialog.Description>
-				This action cannot be undone. This will permanently delete <strong>{active_symbol_group.name}</strong>
+				This action cannot be undone. This will permanently delete <strong>{active_symbol_group?.name}</strong>
 				and
 				<strong>all</strong>
 				it's blocks.
@@ -186,7 +190,7 @@
 						<Loader />
 					</div>
 				{:else}
-					Delete {active_symbol_group.name}
+					Delete {active_symbol_group?.name}
 				{/if}
 			</AlertDialog.Action>
 		</AlertDialog.Footer>
@@ -197,7 +201,7 @@
 	<div class="flex flex-1 items-center gap-2 px-3">
 		<Sidebar.Trigger />
 		<Separator orientation="vertical" class="mr-2 h-4" />
-		<div class="text-sm">{active_symbol_group.name}</div>
+		<div class="text-sm">{active_symbol_group?.name}</div>
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				{#snippet child({ props })}
